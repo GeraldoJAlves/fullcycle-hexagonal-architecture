@@ -48,3 +48,17 @@ func Test_ProductDisabled(t *testing.T) {
 	require.NotNil(t, err)
 	require.Equal(t, "the prive must be zero in order to have the product disabled", err.Error())
 }
+
+func Test_ProductIsValid(t *testing.T) {
+	p := application.Product{
+		Name:   "Ball",
+		Price:  0,
+		Status: "",
+	}
+
+	isValid, err := p.IsValid()
+
+	require.Nil(t, err)
+	require.Equal(t, true, isValid)
+	require.Equal(t, application.DISABLED, p.Status)
+}
