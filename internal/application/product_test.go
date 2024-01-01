@@ -61,4 +61,21 @@ func Test_ProductIsValid(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, true, isValid)
 	require.Equal(t, application.DISABLED, p.Status)
+
+	p.Status = "wrong_status"
+
+	isValid, err = p.IsValid()
+
+	require.NotNil(t, err)
+	require.Equal(t, "the status must be enabled or disabled", err.Error())
+	require.Equal(t, false, isValid)
+
+	p.Price = -1
+	p.Status = application.DISABLED
+
+	isValid, err = p.IsValid()
+
+	require.NotNil(t, err)
+	require.Equal(t, "the price must be greater or equal zero", err.Error())
+	require.Equal(t, false, isValid)
 }
