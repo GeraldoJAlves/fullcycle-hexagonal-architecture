@@ -26,8 +26,8 @@ func (p *Product) Enable() error {
 }
 
 func (p *Product) Disable() error {
-	if p.Price > 0 {
-		p.Status = ENABLED
+	if p.Price == 0 {
+		p.Status = DISABLED
 		return nil
 	}
 	return errors.New("the prive must be zero in order to have the product disabled")
