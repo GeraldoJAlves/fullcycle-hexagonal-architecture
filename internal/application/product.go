@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/google/uuid"
 )
 
 func init() {
@@ -16,17 +17,26 @@ type ProductInterface interface {
 	IsValid()
 }
 
-type Product struct {
-	ID     string
-	Name   string
-	Price  float64
-	Status string
-}
-
-var (
+const (
 	DISABLED = "disabled"
 	ENABLED  = "enabled"
 )
+
+type Product struct {
+	ID     string  `valid:"uuidv4"`
+	Name   string  `valid:"required"`
+	Price  float64 `valid:"float,optional"`
+	Status string  `valid:"required"`
+}
+
+func NewProduct(name string, price float64) *Product {
+	return &Product{
+		ID:     uuid.New().String(),
+		Name:   name,
+		Price:  price,
+		Status: DISABLED,
+	}
+}
 
 func (p *Product) Enable() error {
 	if p.Price > 0 {
@@ -41,7 +51,7 @@ func (p *Product) Disable() error {
 		p.Status = DISABLED
 		return nil
 	}
-	return errors.New("the prive must be zero in order to have the product disabled")
+	return errors.New("the price must be zero in order to have the product disabled")
 }
 
 func (p *Product) IsValid() (bool, error) {
@@ -57,5 +67,5 @@ func (p *Product) IsValid() (bool, error) {
 		return false, errors.New("the price must be greater or equal zero")
 	}
 
-	return true, nil
+	return govalidator.ValidateStruct(p)
 }

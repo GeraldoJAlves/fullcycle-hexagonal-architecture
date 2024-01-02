@@ -9,11 +9,7 @@ import (
 )
 
 func Test_ProductEnabled(t *testing.T) {
-	p := application.Product{
-		Name:   "Ball",
-		Price:  9.99,
-		Status: application.DISABLED,
-	}
+	p := application.NewProduct("Ball", 9.99)
 
 	err := p.Enable()
 
@@ -29,11 +25,8 @@ func Test_ProductEnabled(t *testing.T) {
 }
 
 func Test_ProductDisabled(t *testing.T) {
-	p := application.Product{
-		Name:   "Ball",
-		Price:  0,
-		Status: application.ENABLED,
-	}
+	p := application.NewProduct("Ball", 0)
+	p.Status = application.ENABLED
 
 	err := p.Disable()
 
@@ -46,15 +39,11 @@ func Test_ProductDisabled(t *testing.T) {
 	err = p.Disable()
 	require.Equal(t, application.ENABLED, p.Status)
 	require.NotNil(t, err)
-	require.Equal(t, "the prive must be zero in order to have the product disabled", err.Error())
+	require.Equal(t, "the price must be zero in order to have the product disabled", err.Error())
 }
 
 func Test_ProductIsValid(t *testing.T) {
-	p := application.Product{
-		Name:   "Ball",
-		Price:  0,
-		Status: "",
-	}
+	p := application.NewProduct("Ball", 1)
 
 	isValid, err := p.IsValid()
 
