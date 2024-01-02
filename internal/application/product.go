@@ -12,9 +12,9 @@ func init() {
 }
 
 type ProductInterface interface {
-	Enable()
-	Disable()
-	IsValid()
+	Enable() error
+	Disable() error
+	IsValid() (bool, error)
 }
 
 type ProductReader interface {
