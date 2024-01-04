@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/geraldojalves/fullcycle-hexagonal-architecture/internal/adapters/db"
+	"github.com/geraldojalves/fullcycle-hexagonal-architecture/internal/application"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/require"
 )
@@ -58,4 +59,38 @@ func TestProductDb_Get(t *testing.T) {
 	require.Equal(t, "ball", p.GetName())
 	require.Equal(t, 2.1, p.GetPrice())
 	require.Equal(t, "enabled", p.GetStatus())
+}
+
+func TestProductDb_Save(t *testing.T) {
+	setUp()
+	defer sqliteDb.Close()
+
+	productDb := db.NewProductDb(sqliteDb)
+	product := application.NewProduct("ball", 1.99)
+
+	_, err := productDb.Save(product)
+
+	require.Nil(t, err)
+
+	productResult, err := productDb.Get(product.GetID())
+	require.Nil(t, err)
+	require.Equal(t, product.GetID(), productResult.GetID())
+	require.Equal(t, product.GetName(), productResult.GetName())
+	require.Equal(t, product.GetPrice(), productResult.GetPrice())
+	require.Equal(t, product.GetStatus(), productResult.GetStatus())
+
+	product.Name = "ball 2"
+	product.Price = 2.99
+	product.Enable()
+
+	_, err = productDb.Save(product)
+
+	require.Nil(t, err)
+
+	productResult, err = productDb.Get(product.GetID())
+	require.Nil(t, err)
+	require.Equal(t, product.GetID(), productResult.GetID())
+	require.Equal(t, product.GetName(), productResult.GetName())
+	require.Equal(t, product.GetPrice(), productResult.GetPrice())
+	require.Equal(t, product.GetStatus(), productResult.GetStatus())
 }
