@@ -24,6 +24,7 @@ func (p ProductDb) Get(id string) (application.ProductInterface, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer stmt.Close()
 
 	var product application.Product
 
@@ -33,4 +34,52 @@ func (p ProductDb) Get(id string) (application.ProductInterface, error) {
 	}
 
 	return &product, nil
+}
+
+func (p ProductDb) Save(product application.ProductInterface) (application.ProductInterface, error) {
+	ctx := context.Background()
+
+	var hasProduct bool
+	p.db.QueryRowContext(ctx, "SELECT true FROM products WHERE id = ?", product.GetID()).Scan(&hasProduct)
+
+	if hasProduct {
+		return p.update(product)
+	} else {
+		return p.create(product)
+	}
+}
+
+func (p ProductDb) create(product application.ProductInterface) (application.ProductInterface, error) {
+	ctx := context.Background()
+
+	stmt, err := p.db.PrepareContext(ctx, "INSERT INTO products VALUES (?, ?, ?, ?)")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, product.GetID(), product.GetName(), product.GetPrice(), product.GetStatus())
+	if err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func (p ProductDb) update(product application.ProductInterface) (application.ProductInterface, error) {
+	ctx := context.Background()
+
+	stmt, err := p.db.PrepareContext(ctx, "UPDATE products SET name=?, price=?, status=? WHERE id=?")
+
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, product.GetName(), product.GetPrice(), product.GetStatus(), product.GetID())
+	if err != nil {
+		return nil, err
+	}
+
+	return product, nil
 }
