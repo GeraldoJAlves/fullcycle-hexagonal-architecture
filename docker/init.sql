@@ -1,1 +1,1 @@
-CREATE TABLE IF NOT EXISTS products (id string, name string, price float)
+CREATE TABLE IF NOT EXISTS products (id string, name string, price float, status string)
