@@ -15,6 +15,10 @@ type ProductInterface interface {
 	Enable() error
 	Disable() error
 	IsValid() (bool, error)
+	GetID() string
+	GetName() string
+	GetPrice() float64
+	GetStatus() string
 }
 
 type ProductReader interface {
@@ -83,4 +87,20 @@ func (p *Product) IsValid() (bool, error) {
 	}
 
 	return govalidator.ValidateStruct(p)
+}
+
+func (p Product) GetID() string {
+	return p.ID
+}
+
+func (p Product) GetName() string {
+	return p.Name
+}
+
+func (p Product) GetPrice() float64 {
+	return p.Price
+}
+
+func (p Product) GetStatus() string {
+	return p.Status
 }
