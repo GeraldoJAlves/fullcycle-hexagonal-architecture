@@ -54,5 +54,8 @@ func TestProductDb_Get(t *testing.T) {
 	p, err := productDb.Get("uuid-1")
 
 	require.Nil(t, err)
+	require.Equal(t, "uuid-1", p.GetID())
 	require.Equal(t, "ball", p.GetName())
+	require.Equal(t, 2.1, p.GetPrice())
+	require.Equal(t, "enabled", p.GetStatus())
 }
