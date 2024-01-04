@@ -36,6 +36,11 @@ type ProductServiceInterface interface {
 	Disable(product ProductInterface) (ProductInterface, error)
 }
 
+type ProductPersistenceInterface interface {
+	ProductWriter
+	ProductReader
+}
+
 const (
 	DISABLED = "disabled"
 	ENABLED  = "enabled"
