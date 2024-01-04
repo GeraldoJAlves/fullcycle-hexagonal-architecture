@@ -62,6 +62,62 @@ func (mr *MockProductInterfaceMockRecorder) Enable() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Enable", reflect.TypeOf((*MockProductInterface)(nil).Enable))
 }
 
+// GetID mocks base method.
+func (m *MockProductInterface) GetID() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetID")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetID indicates an expected call of GetID.
+func (mr *MockProductInterfaceMockRecorder) GetID() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetID", reflect.TypeOf((*MockProductInterface)(nil).GetID))
+}
+
+// GetName mocks base method.
+func (m *MockProductInterface) GetName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetName indicates an expected call of GetName.
+func (mr *MockProductInterfaceMockRecorder) GetName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetName", reflect.TypeOf((*MockProductInterface)(nil).GetName))
+}
+
+// GetPrice mocks base method.
+func (m *MockProductInterface) GetPrice() float64 {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPrice")
+	ret0, _ := ret[0].(float64)
+	return ret0
+}
+
+// GetPrice indicates an expected call of GetPrice.
+func (mr *MockProductInterfaceMockRecorder) GetPrice() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPrice", reflect.TypeOf((*MockProductInterface)(nil).GetPrice))
+}
+
+// GetStatus mocks base method.
+func (m *MockProductInterface) GetStatus() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetStatus")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetStatus indicates an expected call of GetStatus.
+func (mr *MockProductInterfaceMockRecorder) GetStatus() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStatus", reflect.TypeOf((*MockProductInterface)(nil).GetStatus))
+}
+
 // IsValid mocks base method.
 func (m *MockProductInterface) IsValid() (bool, error) {
 	m.ctrl.T.Helper()
@@ -234,4 +290,57 @@ func (m *MockProductServiceInterface) Get(id string) (application.ProductInterfa
 func (mr *MockProductServiceInterfaceMockRecorder) Get(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockProductServiceInterface)(nil).Get), id)
+}
+
+// MockProductPersistenceInterface is a mock of ProductPersistenceInterface interface.
+type MockProductPersistenceInterface struct {
+	ctrl     *gomock.Controller
+	recorder *MockProductPersistenceInterfaceMockRecorder
+}
+
+// MockProductPersistenceInterfaceMockRecorder is the mock recorder for MockProductPersistenceInterface.
+type MockProductPersistenceInterfaceMockRecorder struct {
+	mock *MockProductPersistenceInterface
+}
+
+// NewMockProductPersistenceInterface creates a new mock instance.
+func NewMockProductPersistenceInterface(ctrl *gomock.Controller) *MockProductPersistenceInterface {
+	mock := &MockProductPersistenceInterface{ctrl: ctrl}
+	mock.recorder = &MockProductPersistenceInterfaceMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockProductPersistenceInterface) EXPECT() *MockProductPersistenceInterfaceMockRecorder {
+	return m.recorder
+}
+
+// Get mocks base method.
+func (m *MockProductPersistenceInterface) Get(id string) (application.ProductInterface, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", id)
+	ret0, _ := ret[0].(application.ProductInterface)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockProductPersistenceInterfaceMockRecorder) Get(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockProductPersistenceInterface)(nil).Get), id)
+}
+
+// Save mocks base method.
+func (m *MockProductPersistenceInterface) Save(product application.ProductInterface) (application.ProductInterface, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Save", product)
+	ret0, _ := ret[0].(application.ProductInterface)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Save indicates an expected call of Save.
+func (mr *MockProductPersistenceInterfaceMockRecorder) Save(product interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockProductPersistenceInterface)(nil).Save), product)
 }
