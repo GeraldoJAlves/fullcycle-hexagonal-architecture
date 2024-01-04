@@ -19,6 +19,7 @@ func NewProductDb(db *sql.DB) *ProductDb {
 
 func (p ProductDb) Get(id string) (application.ProductInterface, error) {
 	ctx := context.Background()
+	defer ctx.Done()
 
 	stmt, err := p.db.PrepareContext(ctx, "SELECT id, name, price, status FROM products WHERE id = ?")
 	if err != nil {
@@ -38,6 +39,7 @@ func (p ProductDb) Get(id string) (application.ProductInterface, error) {
 
 func (p ProductDb) Save(product application.ProductInterface) (application.ProductInterface, error) {
 	ctx := context.Background()
+	defer ctx.Done()
 
 	var hasProduct bool
 	p.db.QueryRowContext(ctx, "SELECT true FROM products WHERE id = ?", product.GetID()).Scan(&hasProduct)
