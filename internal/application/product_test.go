@@ -8,7 +8,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_ProductEnabled(t *testing.T) {
+func TestProduct_Getters(t *testing.T) {
+	p := application.NewProduct("Ball", 9.99)
+
+	require.NotNil(t, p.GetID())
+	require.Equal(t, "Ball", p.GetName())
+	require.Equal(t, 9.99, p.GetPrice())
+	require.Equal(t, application.DISABLED, p.GetStatus())
+}
+
+func TestProduct_Enabled(t *testing.T) {
 	p := application.NewProduct("Ball", 9.99)
 
 	err := p.Enable()
@@ -24,7 +33,7 @@ func Test_ProductEnabled(t *testing.T) {
 	require.Equal(t, "the price must be greater than zero to enable the product", err.Error())
 }
 
-func Test_ProductDisabled(t *testing.T) {
+func TestProduct_Disabled(t *testing.T) {
 	p := application.NewProduct("Ball", 0)
 	p.Status = application.ENABLED
 
@@ -42,14 +51,22 @@ func Test_ProductDisabled(t *testing.T) {
 	require.Equal(t, "the price must be zero in order to have the product disabled", err.Error())
 }
 
-func Test_ProductIsValid(t *testing.T) {
+func TestProduct_IsValid(t *testing.T) {
 	p := application.NewProduct("Ball", 1)
 
 	isValid, err := p.IsValid()
 
 	require.Nil(t, err)
 	require.Equal(t, true, isValid)
-	require.Equal(t, application.DISABLED, p.Status)
+	require.Equal(t, application.DISABLED, p.GetStatus())
+
+	p.Status = ""
+
+	isValid, err = p.IsValid()
+
+	require.Nil(t, err)
+	require.Equal(t, true, isValid)
+	require.Equal(t, application.DISABLED, p.GetStatus())
 
 	p.Status = "wrong_status"
 
