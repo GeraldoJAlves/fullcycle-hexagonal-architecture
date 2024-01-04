@@ -1,6 +1,7 @@
 FROM golang:1.21
 
 WORKDIR /go/src
+
 ENV PATH="/go/bin:${PATH}"
 
 COPY go.mod .
@@ -10,6 +11,10 @@ RUN go get -u github.com/spf13/cobra@latest  && \
     go install github.com/spf13/cobra-cli@latest
 
 RUN apt-get update && apt-get install sqlite3 make -y
+
+COPY docker/init.sql /opt/
+
+RUN touch sqlite.db && sqlite3 sqlite.db < /opt/init.sql
 
 RUN usermod -u 1000 www-data
 RUN mkdir -p /var/www/.cache
