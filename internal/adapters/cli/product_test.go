@@ -80,3 +80,28 @@ func TestRun_Disable(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, fmt.Sprintf("Product %s has been disabled", productName), result)
 }
+
+func TestRun_Get(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	productName := "Ball 2"
+	productPrice := 2.99
+	productId := "uuid-1"
+	productStatus := "enabled"
+
+	productMock := mock_application.NewMockProductInterface(ctrl)
+	productMock.EXPECT().GetID().Return(productId).AnyTimes()
+	productMock.EXPECT().GetName().Return(productName).AnyTimes()
+	productMock.EXPECT().GetPrice().Return(productPrice).AnyTimes()
+	productMock.EXPECT().GetStatus().Return(productStatus).AnyTimes()
+
+	serviceMock := mock_application.NewMockProductServiceInterface(ctrl)
+	serviceMock.EXPECT().Get(gomock.Any()).Return(productMock, nil)
+
+	result, err := cli.Run(serviceMock, "", productId, "", 0)
+
+	require.Nil(t, err)
+	require.Equal(t, fmt.Sprintf("Product ID: %s\nName: %s\nPrice: %f\nStatus: %s\n",
+		productId, productName, productPrice, productStatus), result)
+}
